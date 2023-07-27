@@ -1,0 +1,90 @@
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '名字',
+  `sex` int(11) NOT NULL COMMENT '性别',
+  `age` int(11) NOT NULL COMMENT '年龄',
+  `date` date NOT NULL COMMENT '注册时间',
+  `status` int(1) NOT NULL COMMENT '状态',
+  `attention_count` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
+  `follower_count` int(11) NOT NULL DEFAULT '0' COMMENT '粉丝数',
+  PRIMARY KEY (`id`),
+  KEY `id_name_sex` (`id`,`name`,`sex`),
+  KEY `name_sex_age` (`name`,`sex`,`age`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000002 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `timeline` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `userId` int(11) NOT NULL COMMENT '用户id',
+  `postId` int(11) NOT NULL COMMENT '帖子id',
+  `postTime` datetime NOT NULL COMMENT '帖子时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `praise` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `cid` int(11) NOT NULL COMMENT '帖子id',
+  `status` int(1) NOT NULL COMMENT '状态，是否取消点赞',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `post_like` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tid` int(11) NOT NULL COMMENT '帖子id',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `is_delete` int(1) NOT NULL COMMENT '是否取消点赞',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `post_index` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '文章标题',
+  `uid` int(11) NOT NULL COMMENT '作者id',
+  `channel_id` int(11) NOT NULL COMMENT '所属频道id',
+  `channel_name` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '所属频道名称',
+  `flag` int(1) NOT NULL COMMENT '是否置顶文章',
+  `type` int(1) NOT NULL COMMENT '分类：0文章，1图文，2视频',
+  `address` varchar(5000) COLLATE utf8_bin NOT NULL COMMENT '图片地址（一般规定，图片最多18张，用逗号隔开），视频地址（一般规定，视频只有一个）',
+  `province_id` int(11) NOT NULL COMMENT '发布省',
+  `city_id` int(11) NOT NULL COMMENT '发布市区',
+  `county_id` int(11) NOT NULL COMMENT '发布区县',
+  `labels` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '标签（规定最多5个标签）',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `is_delete` int(1) NOT NULL COMMENT '是否删除：0存在，1删除',
+  `ll` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '经纬度',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `post_content` (
+  `id` int(11) NOT NULL COMMENT '帖子主键',
+  `content` varchar(1000) COLLATE utf8_bin NOT NULL COMMENT '内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `follower` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `userId` int(11) NOT NULL COMMENT '用户id',
+  `followerId` int(11) NOT NULL COMMENT '粉丝id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `Counter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `postId` int(11) NOT NULL COMMENT '帖子id',
+  `readCount` int(11) NOT NULL COMMENT '浏览量',
+  `praiseCount` int(11) NOT NULL COMMENT '点赞数',
+  `transmitdCount` int(11) NOT NULL COMMENT '转发数',
+  `commentCount` int(11) NOT NULL COMMENT '评论数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `attention` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `userId` int(11) NOT NULL COMMENT '用户id',
+  `attentionId` int(11) NOT NULL COMMENT '关注用户id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
