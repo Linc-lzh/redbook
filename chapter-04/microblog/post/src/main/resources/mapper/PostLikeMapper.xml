@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.post.mapper.PostLikeMapper">
+
+    <resultMap id="postLikeResultMap" type="com.post.post.model.PostLike">
+        <id property="id" column="id"/>
+        <result property="tid" column="tid"/>
+        <result property="uid" column="uid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+    <select id="findById" resultMap="postLikeResultMap">
+        SELECT * FROM post_like WHERE id = #{id}
+    </select>
+
+    <insert id="createPostLike">
+        INSERT INTO post_like (id, tid, uid, is_delete)
+        VALUES (#{id}, #{tid}, #{uid}, #{isDelete})
+    </insert>
+
+    <update id="updatePostLike">
+        UPDATE post_like
+        SET  is_delete = #{isDelete} , create_time=now()
+        WHERE tid = #{tid} and uid = #{uid}
+    </update>
+
+    <delete id="deletePostLike">
+        DELETE FROM post_like WHERE id = #{id}
+    </delete>
+
+    <select id="selectUserIdsByPostId" resultType="java.lang.Integer">
+        SELECT uid FROM post_like WHERE tid = #{postId} AND is_delete = 0
+    </select>
+
+    <select id="selectPostIdsByUserId" resultType="java.lang.Integer">
+        SELECT tid FROM post_like WHERE uid = #{userId} AND is_delete = 0
+    </select>
+
+    <select id="selectByUserId" resultMap="postLikeResultMap">
+        SELECT *
+        FROM post_like
+        WHERE uid = #{uid} AND is_delete = 0
+        ORDER BY create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="countByUserIdAndPostId" resultType="int">
+        SELECT COUNT(*)
+        FROM post_like
+        WHERE uid = #{userId}
+          AND tid = #{postId}
+          AND is_delete = 0
+    </select>
+</mapper>

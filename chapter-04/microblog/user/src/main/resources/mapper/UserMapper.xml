@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.user.mapper.UserMapper">
+
+    <select id="getFollowers" resultType="java.lang.Integer">
+        SELECT followerId FROM follower WHERE userId=#{uid}
+        ORDER BY create_time DESC LIMIT 200;
+    </select>
+
+    <select id="getAttentions" resultType="java.lang.Integer">
+        SELECT attentionId FROM attention WHERE userId=#{uid}
+        ORDER BY create_time DESC LIMIT 200;
+    </select>
+
+    <select id="getUserInfo" resultType="com.user.user.model.User">
+        select * from user where id=#{uid}
+    </select>
+
+    <select id="getFollower" resultType="com.user.user.model.Follower">
+        SELECT * FROM follower WHERE userId=#{uid} and followerId=#{followerId}
+    </select>
+
+    <select id="getAttention" resultType="com.user.user.model.Attention">
+        SELECT * FROM attention WHERE userId=#{uid} and attentionId#{attentionId}
+    </select>
+
+    <insert id="setFollower">
+        INSERT INTO `follower` (userId, followerId, create_time, is_delete)
+        VALUES (#{uid}, #{followerId}, NOW(), 0)
+    </insert>
+
+    <insert id="setAttention">
+        INSERT INTO `attention` (userId, attentionId, create_time, is_delete)
+        VALUES (#{uid}, #{attentionId}, NOW(), 0)
+    </insert>
+
+    <update id="delFollower">
+        UPDATE follower SET is_delete = #{isDelete}
+        WHERE userId = #{uid} and followerId=#{followerId};
+    </update>
+
+    <update id="delAttention">
+        UPDATE attention SET is_delete = #{isDelete}
+        WHERE userId = #{uid} and attentionId=#{attentionId};
+    </update>
+
+</mapper>

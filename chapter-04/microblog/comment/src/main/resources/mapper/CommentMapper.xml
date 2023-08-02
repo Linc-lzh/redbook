@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comment.comment.mapper.CommentMapper">
+
+    <update id="updateCommentIndex">
+
+    </update>
+
+    <!-- 插入 CommentIndex 记录 -->
+    <insert id="insertCommentIndex" parameterType="com.comment.comment.model.CommentIndex" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment_index (objId, type, memberId, root, parent, floor, `like`, state, attrs, count, createTime, updateTime)
+        VALUES (#{objId}, #{type}, #{memberId}, #{root}, #{parent}, #{floor}, 0, 0, 0, #{count}, NOW(), NOW())
+    </insert>
+
+    <!-- 插入 CommentContent 记录 -->
+    <insert id="insertCommentContent" parameterType="com.comment.comment.model.CommentIndex">
+        INSERT INTO comment_content (commentId, message, createTime, updateTime)
+        VALUES (#{commentId}, #{message}, NOW(), NOW())
+    </insert>
+
+    <select id="pageRootComment" resultType="int">
+
+    </select>
+
+    <select id="pageSecondComment" resultType="int">
+
+    </select>
+
+    <select id="contents" resultType="int">
+
+    </select>
+
+</mapper>

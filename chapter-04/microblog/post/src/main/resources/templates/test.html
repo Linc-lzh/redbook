@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ChatGPT Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .chat-window {
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            height: 400px;
+            padding: 20px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .bot-message {
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>ChatGPT Demo</h1>
+    </div>
+
+    <div class="chat-window" id="chat-window">
+    </div>
+
+    <div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    const chatWindow = document.getElementById('chat-window');
+    const userInput = document.getElementById('user-input');
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+
+        if (message !== '') {
+            addUserMessage(message);
+            scrollToBottom();
+
+            // Send the message to the server and receive the response
+            // You would need to implement the server-side logic to interact with the language model
+            const response = getBotResponse(message);
+
+            addBotMessage(response);
+            scrollToBottom();
+
+            userInput.value = '';
+        }
+    }
+
+    function addUserMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add('user-message');
+        messageElement.innerText = message;
+        chatWindow.appendChild(messageElement);
+    }
+
+    function addBotMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add('bot-message');
+        messageElement.innerText = message;
+        chatWindow.appendChild(messageElement);
+    }
+
+    function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+</script>
+</body>
+</html>

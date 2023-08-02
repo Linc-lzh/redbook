@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.post.mapper.PostIndexMapper">
+
+    <resultMap id="postIndexResultMap" type="com.post.post.model.PostIndex">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="uid" column="uid"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="flag" column="flag"/>
+        <result property="type" column="type"/>
+        <result property="address" column="address"/>
+        <result property="provinceId" column="province_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="countyId" column="county_id"/>
+        <result property="labels" column="labels"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="ll" column="ll"/>
+    </resultMap>
+
+    <select id="findById" resultMap="postIndexResultMap">
+        SELECT * FROM post_index WHERE id = #{id}
+    </select>
+
+    <insert id="createPostIndex">
+        INSERT INTO post_index (title, uid, channel_id, channel_name, flag, type, address, province_id, city_id, county_id, labels, create_time, update_time, is_delete, ll)
+        VALUES (#{title}, #{uid}, #{channelId}, #{channelName}, #{flag}, #{type}, #{address}, #{provinceId}, #{cityId}, #{countyId}, #{labels}, #{createTime}, #{updateTime}, #{isDelete}, #{ll})
+    </insert>
+
+    <update id="updatePostIndex">
+        UPDATE post_index
+        SET title = #{title}, uid = #{uid}, channel_id = #{channelId}, channel_name = #{channelName}, flag = #{flag}, type = #{type},
+            address = #{address}, province_id = #{provinceId}, city_id = #{cityId}, county_id = #{countyId}, labels = #{labels},
+            create_time = #{createTime}, update_time = #{updateTime}, is_delete = #{isDelete}, ll = #{ll}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deletePostIndex">
+        DELETE FROM post_index WHERE id = #{id}
+    </delete>
+
+    <select id="getAllPostIndexes" resultMap="postIndexResultMap">
+        SELECT * FROM post_index
+    </select>
+
+    <select id="getPostIndexByUserId" resultMap="postIndexResultMap">
+        SELECT *
+        FROM post_index
+        WHERE uid = #{userId}
+        ORDER BY id DESC
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="getPostIndexCountByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM post_index
+        WHERE uid = #{userId}
+    </select>
+
+    <select id="selectPostIdsByUserIdAndPostIds" resultType="int">
+        SELECT tid
+        FROM post_like
+        WHERE uid = #{userId}
+        AND tid IN
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+        AND is_delete = 0
+    </select>
+
+    <select id="selectByIdList" resultType="com.example.model.PostIndex">
+        SELECT * FROM post_index
+        WHERE id IN
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

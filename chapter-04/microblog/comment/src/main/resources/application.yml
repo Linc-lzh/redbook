@@ -1,0 +1,30 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: comment-client
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: comment-group
+  redis:
+    host: localhost
+    port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wb?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: edogawaran544869
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+mybatis:
+  type-aliases-package: com.user.user.model
+  mapper-locations: classpath:mapper/*.xml
+
