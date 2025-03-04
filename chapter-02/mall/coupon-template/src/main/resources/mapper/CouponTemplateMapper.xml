@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coupon.couponserver.mapper.CouponTemplateMapper">
+
+    <resultMap id="couponTemplateResultMap" type="com.coupon.couponserver.model.CouponTemplate">
+        <id property="id" column="id"/>
+        <result property="available" column="available"/>
+        <result property="expired" column="expired"/>
+        <result property="name" column="name"/>
+        <result property="intro" column="intro"/>
+        <result property="objId" column="obj_id"/>
+        <result property="objType" column="obj_type"/>
+        <result property="couponCount" column="coupon_count"/>
+        <result property="remainingCount" column="remaining_count"/>
+        <result property="createTime" column="create_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="templateKey" column="template_key"/>
+        <result property="target" column="target"/>
+        <result property="couponType" column="coupon_type"/>
+        <result property="discount" column="discount"/>
+        <result property="minAmount" column="min_amount"/>
+        <result property="maxAmount" column="max_amount"/>
+        <result property="canStack" column="can_stack"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="endTime" column="end_time"/>
+        <result property="validityMode" column="validity_mode"/>
+        <result property="validityDays" column="validity_days"/>
+        <result property="isPlatformCoupon" column="is_platform_coupon"/>
+    </resultMap>
+
+    <insert id="insertCouponTemplate" parameterType="com.coupon.couponserver.model.CouponTemplate">
+        INSERT INTO coupon_template (
+        available, expired, name, intro, obj_id, obj_type, coupon_count, remaining_count,
+        create_time, user_id , target, coupon_type, discount, min_amount,
+        max_amount, can_stack, is_platform_coupon, activity_id, end_time, validity_mode,
+        validity_days
+        ) VALUES (
+        #{available}, #{expired}, #{name}, #{intro}, #{objId}, #{objType}, #{couponCount},
+        #{couponCount}, #{createTime}, 1,
+        #{target}, #{couponType},
+        #{discount}, #{minAmount}, #{maxAmount}, #{canStack}, #{isPlatformCoupon},
+        #{activityId}, #{endTime}, #{validityMode},
+        <if test="validityDays != null">#{validityDays}</if>
+        <if test="validityDays == null">0</if>
+        )
+    </insert>
+
+    <select id="findMaxCouponId" resultType="com.coupon.couponserver.model.CouponTemplate">
+        SELECT *
+        FROM coupon_template
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+
+    <update id="update" parameterType="com.coupon.couponserver.model.CouponTemplate">
+        UPDATE coupon_template
+        SET expired = #{expired}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM coupon_template WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="int" resultMap="couponTemplateResultMap">
+        SELECT *
+        FROM coupon_template
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="couponTemplateResultMap">
+        SELECT *
+        FROM coupon_template
+    </select>
+
+    <select id="getCouponTemplatesByValidityMode" resultMap="couponTemplateResultMap">
+        SELECT *
+        FROM coupon_template
+        WHERE validity_mode = #{validityMode}
+        AND available=0 AND expired=0
+    </select>
+
+
+</mapper>

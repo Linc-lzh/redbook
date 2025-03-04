@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comment.server.mapper.CommentLikeDetailsMapper">
+
+    <!-- 插入新的点赞详情 -->
+    <insert id="insertCommentLikeDetails" parameterType="com.comment.server.model.CommentLikeDetails">
+        INSERT INTO comment_like_details (commentId, memberId, createTime)
+        VALUES (#{commentId}, #{memberId}, NOW())
+    </insert>
+
+    <!-- 根据commentId和memberId更新点赞时间，仅当记录存在时 -->
+    <update id="updateLikeTimeByCommentIdAndMemberId">
+        UPDATE comment_like_details
+        SET createTime = NOW()
+        WHERE commentId = #{commentId} AND memberId = #{memberId}
+    </update>
+
+    <!-- 根据commentId查询点赞详情 -->
+    <select id="selectByCommentId" resultType="com.comment.server.model.CommentLikeDetails">
+        SELECT * FROM comment_like_details WHERE commentId = #{commentId}
+    </select>
+
+    <!-- 根据用户id查询所有点赞的评论id -->
+    <select id="findCommentIdsByMemberId" resultType="java.lang.Long">
+        SELECT commentId
+        FROM comment_like_details
+        WHERE memberId = #{memberId} AND is_cancelled = 0
+    </select>
+
+</mapper>

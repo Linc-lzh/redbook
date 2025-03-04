@@ -1,0 +1,37 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.PostContentMapper">
+
+    <!-- 结果映射定义，对应 PostContent 实体类 -->
+    <resultMap id="postContentMap" type="com.post.server.model.PostContent">
+        <id property="postId" column="post_id" />
+        <result property="content" column="content" />
+    </resultMap>
+
+    <!-- 插入帖子内容 -->
+    <!-- @param postContent 帖子内容对象 -->
+    <!-- @return 插入的行数 -->
+    <insert id="insertPostContent" parameterType="PostContent">
+        INSERT INTO post_content (post_id, content) VALUES (#{postId}, #{content})
+    </insert>
+
+    <!-- 根据帖子ID删除帖子内容 -->
+    <!-- @param postId 帖子ID -->
+    <!-- @return 删除的行数 -->
+    <delete id="deletePostContent" parameterType="Long">
+        DELETE FROM post_content WHERE post_id = #{postId}
+    </delete>
+
+    <!-- 更新帖子内容 -->
+    <!-- @param postContent 更新后的帖子内容对象 -->
+    <!-- @return 更新的行数 -->
+    <update id="updatePostContent" parameterType="PostContent">
+        UPDATE post_content SET content = #{content} WHERE post_id = #{postId}
+    </update>
+
+    <!-- 根据帖子ID查询帖子内容 -->
+    <!-- @param postId 帖子ID -->
+    <!-- @return 查询到的帖子内容对象 -->
+    <select id="getPostContent" parameterType="Long" resultMap="postContentMap">
+        SELECT * FROM post_content WHERE post_id = #{postId}
+    </select>
+</mapper>

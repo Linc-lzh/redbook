@@ -1,0 +1,72 @@
+server:
+  port: 8080
+
+spring:
+  shardingsphere:
+    datasource:
+      names: ds
+      ds:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/social?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+        username: root
+        password: edogawaran544869
+    rules:
+      sharding:
+        tables:
+          user:
+            actual-data-nodes: ds.users_${0..1}
+            table-strategy:
+              standard:
+                sharding-column: id
+                sharding-algorithm-name: user_table_inline
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+        sharding-algorithms:
+          user_table_inline:
+            type: INLINE
+            props:
+              algorithm-expression: user_${id % 2} # 更改此处的表名为 'users'
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+            props:
+              worker-id: 123 # 根据实际情况调整
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  session:
+    store-type: redis
+    timeout: 1800s
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    accessKeyId: xxx
+    accessKeySecret: xxx
+    bucketName: talk-it-easy-video-cover
+
+hotkey:
+  app-name: demo
+  etcd-server: http://127.0.0.1:2379
+  caffeine-size: 1000
+
+
+# 其他的个性化配置...
+#  APS-cDgwUHujaQQizwlHcq61t63TE3GxoPyG

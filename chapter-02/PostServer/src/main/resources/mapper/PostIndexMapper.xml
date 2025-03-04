@@ -1,0 +1,55 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.PostIndexMapper">
+
+    <!-- 插入操作 -->
+    <!-- 插入新的文章记录 -->
+    <insert id="insertPostIndex" parameterType="com.post.server.model.PostIndex">
+        INSERT INTO post_index (title, uid, channel_id, flag, type, province_id, city_id, county_id, create_time, update_time, is_delete, ll)
+        VALUES (#{title}, #{uid}, #{channelId}, #{flag}, #{type}, #{provinceId}, #{cityId}, #{countyId}, #{createTime}, #{updateTime}, #{isDelete}, #{ll})
+    </insert>
+
+    <!-- 更新操作 -->
+    <!-- 根据ID更新文章记录 -->
+    <update id="updatePostIndex" parameterType="com.post.server.model.PostIndex">
+        UPDATE post_index
+        SET title = #{title},
+            uid = #{uid},
+            channel_id = #{channelId},
+            flag = #{flag},
+            type = #{type},
+            province_id = #{provinceId},
+            city_id = #{cityId},
+            county_id = #{countyId},
+            update_time = #{updateTime},
+            is_delete = #{isDelete},
+            ll = #{ll}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 软删除操作 -->
+    <!-- 更新is_delete字段来软删除文章 -->
+    <update id="softDeletePostIndex">
+        UPDATE post_index
+        SET is_delete = 1, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据 uid 查询帖子列表 -->
+    <select id="selectByUserId" resultType="com.post.server.model.PostIndex">
+        SELECT * FROM post_index WHERE uid = #{uid}
+    </select>
+
+    <!-- 根据 id 查询单个帖子 -->
+    <select id="selectById" resultType="com.post.server.model.PostIndex">
+        SELECT * FROM post_index WHERE id = #{id}
+    </select>
+
+    <!-- 根据多个 ID 查询帖子列表 -->
+    <select id="selectPostsByIds" resultType="com.post.server.model.PostIndex">
+        SELECT * FROM post_index WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

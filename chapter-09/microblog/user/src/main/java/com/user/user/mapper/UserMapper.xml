@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.user.mapper.UserMapper">
+
+
+    <select id="getFollowers" resultType="java.lang.Integer">
+        select followerId from follower where userId=#{uid}
+    </select>
+
+    <select id="getAttentions" resultType="java.lang.Integer">
+        select attentionId from attention where userId=#{uid}
+    </select>
+
+    <select id="getUserInfo" resultType="com.user.user.model.User">
+        select * from user where id=#{uid}
+    </select>
+</mapper>

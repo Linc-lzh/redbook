@@ -1,0 +1,45 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.PostStatsMapper">
+
+    <!-- 结果映射定义，对应 PostStats 实体类 -->
+    <resultMap id="postStatsMap" type="com.post.server.model.PostStats">
+        <id property="postId" column="post_id" />
+        <result property="likesCount" column="likes_count" />
+        <result property="sharesCount" column="shares_count" />
+        <result property="commentsCount" column="comments_count" />
+    </resultMap>
+
+    <!-- 插入帖子统计信息 -->
+    <!-- @param postStats 帖子统计信息对象 -->
+    <!-- @return 插入的行数 -->
+    <insert id="insertPostStats" parameterType="PostStats">
+        INSERT INTO post_stats (post_id, likes_count, shares_count, comments_count) VALUES (#{postId}, #{likesCount}, #{sharesCount}, #{commentsCount})
+    </insert>
+
+    <!-- 更新帖子统计信息 -->
+    <!-- @param postStats 更新后的帖子统计信息对象 -->
+    <!-- @return 更新的行数 -->
+    <update id="updatePostStats" parameterType="PostStats">
+        UPDATE post_stats SET likes_count = #{likesCount}, shares_count = #{sharesCount}, comments_count = #{commentsCount} WHERE post_id = #{postId}
+    </update>
+
+    <!-- 根据帖子ID查询统计信息 -->
+    <!-- @param postId 帖子ID -->
+    <!-- @return 查询到的帖子统计信息对象 -->
+    <select id="getPostStats" parameterType="Long" resultMap="postStatsMap">
+        SELECT * FROM post_stats WHERE post_id = #{postId}
+    </select>
+
+    <!-- 批量插入帖子统计信息 -->
+    <!-- @param postStatsList 帖子统计信息列表 -->
+    <!-- @return 插入的行数 -->
+    <insert id="batchInsertPostStats" parameterType="list">
+        <script>
+            INSERT INTO post_stats (post_id, likes_count, shares_count, comments_count) VALUES
+            <foreach collection="postStatsList" item="postStats" separator=",">
+                (#{postStats.postId}, #{postStats.likesCount}, #{postStats.sharesCount}, #{postStats.commentsCount})
+            </foreach>
+        </script>
+    </insert>
+
+</mapper>

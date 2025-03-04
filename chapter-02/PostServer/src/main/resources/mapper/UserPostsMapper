@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.UserPostsMapper">
+
+    <insert id="insertUserPost" parameterType="com.post.server.model.UserPost">
+        INSERT INTO user_posts (post_id, user_id, creation_time)
+        VALUES (#{postId}, #{userId}, #{creationTime})
+    </insert>
+
+    <update id="updateUserPost" parameterType="com.post.server.model.UserPost">
+        UPDATE user_posts
+        SET post_id = #{postId}, user_id = #{userId}, creation_time = #{creationTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUserPostById">
+        DELETE FROM user_posts WHERE id = #{id}
+    </delete>
+
+    <select id="selectUserPostById" resultType="com.post.server.model.UserPost">
+        SELECT * FROM user_posts WHERE id = #{id}
+    </select>
+
+    <select id="findAllPostsByUserIdOrderByCreationTime" resultType="com.post.server.model.UserPost">
+        SELECT * FROM user_posts
+        WHERE user_id = #{userId}
+        ORDER BY creation_time DESC
+    </select>
+
+    <insert id="batchInsertOrUpdate">
+        <foreach collection="list" item="item" separator=";" open="" close="">
+            INSERT INTO user_posts (post_id, user_id, creation_time)
+            VALUES (#{item.postId}, #{item.userId}, #{item.creationTime})
+            ON DUPLICATE KEY UPDATE
+            post_id = VALUES(post_id), user_id = VALUES(user_id), creation_time = VALUES(creation_time)
+        </foreach>
+    </insert>
+
+</mapper>

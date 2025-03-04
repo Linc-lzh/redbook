@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coupon.couponserver.mapper.ActivityMapper">
+
+    <resultMap id="BaseResultMap" type="com.coupon.couponserver.model.Activity">
+        <id column="activity_id" property="activityId" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="activity_name" property="activityName" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.coupon.couponserver.model.Activity">
+        INSERT INTO activity (activity_id, merchant_id, activity_name, total_amount, start_date, end_date)
+        VALUES (#{activityId}, #{merchantId}, #{activityName}, #{totalAmount}, #{startDate}, #{endDate})
+    </insert>
+
+    <update id="update" parameterType="com.coupon.couponserver.model.Activity">
+        UPDATE activity
+        SET merchant_id = #{merchantId},
+            activity_name = #{activityName},
+            total_amount = #{totalAmount},
+            start_date = #{startDate},
+            end_date = #{endDate}
+        WHERE activity_id = #{activityId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM activity
+        WHERE activity_id = #{activityId}
+    </delete>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="int">
+        SELECT *
+        FROM activity
+        WHERE activity_id = #{activityId}
+    </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM activity
+    </select>
+</mapper>

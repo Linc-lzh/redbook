@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comment.server.mapper.CommentIndexMapper">
+
+    <insert id="insertCommentIndex" parameterType="com.comment.server.model.CommentIndex">
+        INSERT INTO comment_index (objId, type, memberId, root, parent, floor, like, state, attrs, count, createTime, updateTime)
+        VALUES (#{objId}, #{type}, #{memberId}, #{root}, #{parent}, #{floor}, #{like}, #{state}, #{attrs}, #{count}, NOW(), NOW())
+    </insert>
+
+    <update id="updateLikeCountById">
+        UPDATE comment_index SET like = #{likeCount} WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.comment.server.model.CommentIndex">
+        SELECT * FROM comment_index WHERE id = #{id}
+    </select>
+
+    <!-- 根据对象ID和父评论ID查询所有评论ID列表 -->
+    <select id="selectCommentIdsByObjIdAndParent" resultType="java.lang.Long">
+        SELECT id
+        FROM comment_index
+        WHERE objId = #{objId}
+          AND parent = #{parent}
+    </select>
+
+    <select id="findCommentsByIds" resultType="com.comment.server.dto.CommentDTO">
+        SELECT ci.*, cc.message
+        FROM comment_index ci
+        JOIN comment_content cc ON ci.id = cc.commentId
+        WHERE ci.id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCommentsByIds" resultType="com.comment.server.model.CommentIndex">
+        SELECT * FROM `comment_index`
+        WHERE `id` IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findByObjIdAndParent" resultType="com.comment.server.model.CommentIndex">
+        SELECT * FROM comment_index WHERE objId = #{objId} AND parent = #{parent}
+    </select>
+
+</mapper>

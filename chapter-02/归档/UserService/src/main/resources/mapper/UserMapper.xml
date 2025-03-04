@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.user.mapper.UserMapper">
+
+    <!-- 根据ID查询用户 -->
+    <select id="findById" resultType="com.user.model.User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <!-- 通过用户名查找用户 -->
+    <select id="findByUsername" resultType="com.user.model.User">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <!-- 注册新用户 -->
+    <insert id="register" parameterType="com.user.model.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, email, password_hash, salt, bio, avatar, status)
+        VALUES (#{username}, #{email}, #{passwordHash}, #{salt}, #{bio}, #{avatar}, 1)
+    </insert>
+
+    <resultMap id="UserDTOResultMap" type="com.user.dto.UserDTO">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="avatar" property="avatar"/>
+        <result column="bio" property="bio"/>
+        <result column="following_count" property="followingCount"/>
+        <result column="followers_count" property="followersCount"/>
+    </resultMap>
+
+    <!-- 模糊搜索用户 -->
+    <select id="searchUsersByUsername" resultMap="UserDTOResultMap">
+        SELECT u.id, u.username, u.avatar, u.bio,
+               (SELECT COUNT(*) FROM user_follows uf WHERE uf.following_id = u.id AND uf.status = 0) as following_count,
+               (SELECT COUNT(*) FROM user_follows uf WHERE uf.follower_id = u.id AND uf.status = 0) as followers_count
+        FROM users u
+        WHERE u.username LIKE CONCAT('%', #{username}, '%')
+    </select>
+
+    <select id="selectUsersByIds" resultMap="UserDTOResultMap">
+        SELECT id, username, avatar, bio FROM users
+        WHERE id IN
+        <foreach item="id" index="index" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findByIds" resultType="com.user.model.User">
+        SELECT * FROM users WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 增加关注数 -->
+    <update id="increaseFollowCount">
+        UPDATE users SET followCount = followCount + 1 WHERE id = #{userId}
+    </update>
+
+    <!-- 减少关注数 -->
+    <update id="decreaseFollowCount">
+        UPDATE users SET followCount = followCount - 1 WHERE id = #{userId}
+    </update>
+
+    <!-- 增加粉丝数 -->
+    <update id="increaseAttentionCount">
+        UPDATE users SET attentionCount = attentionCount + 1 WHERE id = #{userId}
+    </update>
+
+    <!-- 减少粉丝数 -->
+    <update id="decreaseAttentionCount">
+        UPDATE users SET attentionCount = attentionCount - 1 WHERE id = #{userId}
+    </update>
+
+</mapper>

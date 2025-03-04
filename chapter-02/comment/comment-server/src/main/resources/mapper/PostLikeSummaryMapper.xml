@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comment.server.mapper.PostLikeSummaryMapper">
+
+    <insert id="insertPostLikeSummary" parameterType="com.comment.server.model.PostLikeSummary">
+        INSERT INTO post_like_summary (objId, type, likeCount, updateTime)
+        VALUES (#{objId}, #{type}, #{likeCount}, NOW())
+    </insert>
+
+    <update id="updateLikeCountByObjId">
+        UPDATE post_like_summary SET likeCount = #{likeCount}, updateTime = NOW() WHERE objId = #{objId}
+    </update>
+
+    <select id="selectByObjId" resultType="com.comment.server.model.PostLikeSummary">
+        SELECT * FROM post_like_summary WHERE objId = #{objId}
+    </select>
+
+</mapper>

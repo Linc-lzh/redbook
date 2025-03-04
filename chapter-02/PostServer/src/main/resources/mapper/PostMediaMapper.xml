@@ -1,0 +1,33 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.PostMediaMapper">
+
+    <!-- 结果映射定义，对应 PostMedia 实体类 -->
+    <resultMap id="postMediaMap" type="com.post.server.model.PostMedia">
+        <result property="postId" column="post_id" />
+        <result property="mediaType" column="media_type" />
+        <result property="mediaUrl" column="media_url" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <!-- 插入帖子媒体信息 -->
+    <!-- @param postMedia 帖子媒体对象 -->
+    <!-- @return 插入的行数 -->
+    <insert id="insertPostMedia" parameterType="PostMedia">
+        INSERT INTO post_media (post_id, media_type, media_url, create_time, update_time) VALUES (#{postId}, #{mediaType}, #{mediaUrl}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 更新帖子媒体信息 -->
+    <!-- @param postMedia 更新后的帖子媒体对象 -->
+    <!-- @return 更新的行数 -->
+    <update id="updatePostMedia" parameterType="PostMedia">
+        UPDATE post_media SET media_type = #{mediaType}, media_url = #{mediaUrl}, create_time = #{createTime}, update_time = #{updateTime} WHERE post_id = #{postId}
+    </update>
+
+    <!-- 根据帖子ID查询媒体信息 -->
+    <!-- @param postId 帖子ID -->
+    <!-- @return 查询到的帖子媒体对象 -->
+    <select id="getPostMedia" parameterType="Long" resultMap="postMediaMap">
+        SELECT * FROM post_media WHERE post_id = #{postId}
+    </select>
+</mapper>

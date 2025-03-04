@@ -1,0 +1,4 @@
+leaf:
+  snowflake:
+    enable: true
+    zk-address: localhost:2181

@@ -1,0 +1,39 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.post.server.mapper.PostLikeMapper">
+
+    <!-- 结果映射定义，对应 PostLike 实体类 -->
+    <resultMap id="postLikeMap" type="com.post.server.model.PostLike">
+        <id property="id" column="id" />
+        <result property="postId" column="post_id" />
+        <result property="userId" column="user_id" />
+        <result property="likeTime" column="like_time" />
+    </resultMap>
+
+    <!-- 插入点赞记录 -->
+    <!-- @param postLike 点赞信息对象 -->
+    <!-- @return 插入的行数 -->
+    <insert id="insertPostLike" parameterType="PostLike">
+        INSERT INTO post_likes (post_id, user_id, like_time) VALUES (#{postId}, #{userId}, #{likeTime})
+    </insert>
+
+    <!-- 根据ID删除点赞记录 -->
+    <!-- @param id 点赞记录的ID -->
+    <!-- @return 删除的行数 -->
+    <delete id="deletePostLike" parameterType="Long">
+        DELETE FROM post_likes WHERE id = #{id}
+    </delete>
+
+    <!-- 更新点赞记录 -->
+    <!-- @param postLike 更新后的点赞信息对象 -->
+    <!-- @return 更新的行数 -->
+    <update id="updatePostLike" parameterType="PostLike">
+        UPDATE post_likes SET post_id = #{postId}, user_id = #{userId}, like_time = #{likeTime} WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询点赞记录 -->
+    <!-- @param id 点赞记录的ID -->
+    <!-- @return 查询到的点赞信息对象 -->
+    <select id="getPostLike" parameterType="Long" resultMap="postLikeMap">
+        SELECT * FROM post_likes WHERE id = #{id}
+    </select>
+</mapper>

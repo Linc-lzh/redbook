@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.mapper.AttentionMapper">
+
+    <insert id="follow" parameterType="Attention">
+        INSERT INTO attentions (user_id, attention_id, follow_date, status)
+        VALUES (#{userId}, #{attentionId}, NOW(), 0)
+    </insert>
+
+    <update id="unfollow" parameterType="map">
+        UPDATE attentions
+        SET status = 1
+        WHERE user_id = #{userId} AND attention_id = #{attentionId}
+    </update>
+
+    <!-- 其他方法如查询等 -->
+
+</mapper>
